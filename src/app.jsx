@@ -58,7 +58,7 @@ class Schedule extends React.Component {
         </ListViewHeader>
       <ListViewSection>
 
-        {this.state.tasks.map(value => renderTask(`${value.taskName} is due on ${untilDue(value.taskDue)}`))}
+        {this.state.tasks.map(value => renderTask(`${value.taskName}: ${untilDue(value.taskDue)}`))}
         <TextInput
           label={this.state.errorMessage}
           placeholder="title"
@@ -82,12 +82,16 @@ class Schedule extends React.Component {
 function untilDue(dueAt) {
   let [day, month, year] = dueAt.split('\/').map(value => parseInt(value))
   let currTime = new Date()
-  return '..'
-
-  
-
-
+  let currYear = currTime.getYear()%100, currMonth = currTime.getMonth(),
+  currDay = currTime.getDay()
  
+  if (currYear !== year) {
+    return `${year - currYear} years left`
+  } else if (currMonth !== month) {
+    return `${month - currMonth} months left`
+  } else if (currDay !== day) {
+    return `${day - currDay} days left`
+  }
 }
 
 function renderTask(info) {
